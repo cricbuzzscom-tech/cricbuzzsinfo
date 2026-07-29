@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cricbuzzs cricket support and information through WhatsApp." />
+  <meta name="theme-color" content="#09090b" />
+  <title>Cricbuzzs | WhatsApp Support</title>
+
+  <style>
+    :root{
+      --bg:#070709;
+      --card:#141419;
+      --card2:#1b1b21;
+      --red:#e01824;
+      --red2:#ff3b45;
+      --yellow:#ffc928;
+      --green:#21c063;
+      --text:#ffffff;
+      --muted:#b8b8c2;
+      --line:rgba(255,255,255,.10);
+      --shadow:0 24px 70px rgba(0,0,0,.45);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 85% 15%,rgba(224,24,36,.17),transparent 28%),
+        radial-gradient(circle at 10% 45%,rgba(255,201,40,.06),transparent 30%),
+        var(--bg);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    body.modal-open{overflow:hidden}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    .container{width:min(1180px,92%);margin:auto}
+    .section{padding:86px 0}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;
+      color:var(--yellow);font-weight:900;font-size:.82rem;
+      letter-spacing:1.4px;text-transform:uppercase;margin-bottom:14px
+    }
+    .eyebrow:before{content:"";width:30px;height:3px;background:var(--red);border-radius:10px}
+    .section-title{font-size:clamp(2rem,4vw,3.25rem);line-height:1.1;margin-bottom:16px}
+    .section-copy{color:var(--muted);max-width:720px;font-size:1.03rem}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:54px;padding:0 26px;border-radius:12px;border:1px solid transparent;
+      font-weight:900;cursor:pointer;transition:.25s transform,.25s background,.25s border-color
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,var(--red),var(--red2));box-shadow:0 12px 32px rgba(224,24,36,.28)}
+    .btn-outline{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.05)}
+    .btn-whatsapp{background:linear-gradient(135deg,#25d366,#16a34a);color:#fff;width:100%}
+    .btn-whatsapp-inline{background:linear-gradient(135deg,#25d366,#16a34a);color:#fff}
+    .btn-telegram{background:linear-gradient(135deg,#2aabee,#168bd2);color:#fff}
+    .dual-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .cta-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .social-link{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:44px;padding:0 16px;border:1px solid var(--line);
+      border-radius:10px;background:rgba(255,255,255,.04);color:#fff!important;font-weight:800
+    }
+
+
+    .header{
+      position:fixed;inset:0 0 auto 0;z-index:50;
+      background:rgba(7,7,9,.76);backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line)
+    }
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-size:1.75rem;font-weight:1000;letter-spacing:-1px;display:flex;align-items:center}
+    .brand span:first-child{color:#fff}
+    .brand span:last-child{color:var(--red2)}
+    .nav-links{display:flex;align-items:center;gap:28px;color:#ddd;font-weight:700;font-size:.94rem}
+    .nav-links a:hover{color:var(--yellow)}
+    .menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
+
+    .hero{
+      min-height:100vh;display:flex;align-items:center;padding:130px 0 70px;
+      position:relative;isolation:isolate
+    }
+    .hero:before{
+      content:"";position:absolute;inset:0;z-index:-2;
+      background:
+        linear-gradient(90deg,rgba(7,7,9,.98) 0%,rgba(7,7,9,.82) 48%,rgba(7,7,9,.42) 100%),
+        url("hero-stadium.jpg") center/cover no-repeat;
+      opacity:.92
+    }
+    .hero:after{
+      content:"";position:absolute;inset:auto 0 0;height:180px;z-index:-1;
+      background:linear-gradient(transparent,var(--bg))
+    }
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 13px;border-radius:100px;
+      border:1px solid rgba(255,201,40,.38);background:rgba(255,201,40,.08);
+      color:var(--yellow);font-weight:900;font-size:.82rem;margin-bottom:22px
+    }
+    .pulse{width:9px;height:9px;border-radius:50%;background:var(--red2);box-shadow:0 0 0 7px rgba(255,59,69,.12)}
+    h1{font-size:clamp(3rem,7vw,6.2rem);line-height:.93;letter-spacing:-4px;text-transform:uppercase}
+    h1 .accent{color:var(--red2);display:block}
+    .hero-copy{max-width:670px;color:#d2d2d8;font-size:1.08rem;margin:25px 0 31px}
+    .hero-actions{display:flex;gap:13px;flex-wrap:wrap}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:42px;max-width:680px}
+    .hero-stat{padding:17px;border:1px solid var(--line);background:rgba(15,15,19,.72);border-radius:16px}
+    .hero-stat strong{display:block;font-size:1.25rem;color:var(--yellow)}
+    .hero-stat span{color:var(--muted);font-size:.84rem}
+
+    .contact-panel{
+      border:1px solid rgba(255,255,255,.14);border-radius:30px;padding:28px;
+      background:linear-gradient(145deg,rgba(32,32,39,.92),rgba(10,10,13,.95));
+      box-shadow:var(--shadow)
+    }
+    .contact-icon{
+      width:76px;height:76px;border-radius:22px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#25d366,#16a34a);font-size:2.2rem;margin-bottom:20px
+    }
+    .contact-panel h2{font-size:2rem;line-height:1.1;margin-bottom:12px}
+    .contact-panel p{color:var(--muted);margin-bottom:20px}
+    .support-list{display:grid;gap:12px;margin:22px 0}
+    .support-item{
+      display:flex;align-items:center;gap:12px;padding:14px 16px;
+      border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:14px
+    }
+    .support-item span:first-child{color:var(--yellow);font-weight:900}
+    .contact-number{text-align:center;margin-top:12px;color:#dcdce2;font-weight:800}
+
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+    .feature-card{
+      min-height:210px;padding:26px;border-radius:var(--radius);border:1px solid var(--line);
+      background:linear-gradient(145deg,rgba(30,30,36,.96),rgba(15,15,19,.96));
+      position:relative;overflow:hidden
+    }
+    .feature-card:after{
+      content:"";position:absolute;width:110px;height:110px;border-radius:50%;
+      right:-40px;bottom:-45px;background:rgba(224,24,36,.13)
+    }
+    .feature-number{font-size:.78rem;color:var(--yellow);font-weight:900;letter-spacing:1px}
+    .feature-card h3{font-size:1.25rem;margin:15px 0 9px}
+    .feature-card p{color:var(--muted);font-size:.92rem}
+
+    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+    .step{padding:24px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+    .step-no{width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,var(--red),#7c1018);display:grid;place-items:center;font-weight:1000;margin-bottom:18px}
+    .step p{color:var(--muted);font-size:.9rem;margin-top:6px}
+
+    .faq-wrap{max-width:900px;margin:36px auto 0}
+    .faq-item{border-bottom:1px solid var(--line)}
+    .faq-q{
+      width:100%;border:0;background:none;color:#fff;cursor:pointer;
+      padding:21px 0;display:flex;align-items:center;justify-content:space-between;
+      text-align:left;font-weight:900;font-size:1.02rem
+    }
+    .faq-q span:last-child{color:var(--yellow);font-size:1.4rem;transition:.25s}
+    .faq-a{max-height:0;overflow:hidden;color:var(--muted);transition:max-height .32s ease}
+    .faq-a p{padding:0 0 21px}
+    .faq-item.active .faq-a{max-height:180px}
+    .faq-item.active .faq-q span:last-child{transform:rotate(45deg)}
+
+    .cta-box{
+      padding:48px;border-radius:30px;border:1px solid rgba(255,59,69,.38);
+      background:
+        radial-gradient(circle at 90% 20%,rgba(255,201,40,.12),transparent 25%),
+        linear-gradient(135deg,#2a0c10,#111116 62%);
+      display:flex;align-items:center;justify-content:space-between;gap:30px
+    }
+    .cta-box h2{font-size:clamp(2rem,4vw,3.4rem);line-height:1}
+
+    footer{border-top:1px solid var(--line);padding:45px 0 28px;background:#050506}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px}
+    .footer-copy{color:var(--muted);max-width:520px;margin-top:14px}
+    .footer-title{font-weight:900;margin-bottom:14px}
+    .footer-links{display:grid;gap:9px;color:var(--muted);font-size:.92rem}
+    .footer-links a:hover{color:var(--yellow)}
+    .copyright{border-top:1px solid var(--line);margin-top:35px;padding-top:20px;color:#777;font-size:.85rem;text-align:center}
+
+    .popup-overlay{
+      position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+      padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(7px)
+    }
+    .popup-overlay.show{display:flex;animation:popupFade .25s ease}
+    .popup-overlay.show .popup{animation:popupZoom .28s ease}
+    @keyframes popupFade{from{opacity:0}to{opacity:1}}
+    @keyframes popupZoom{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+    .popup{
+      width:min(560px,96vw);
+      max-height:94vh;
+      overflow:auto;
+      background:#101014;
+      border-radius:23px;
+      border:1px solid rgba(255,255,255,.17);
+      box-shadow:0 35px 110px rgba(0,0,0,.75);
+      position:relative;
+    }
+    .popup-close{
+      position:absolute;right:10px;top:10px;z-index:2;width:40px;height:40px;border-radius:50%;
+      border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.68);color:#fff;font-size:1.35rem;cursor:pointer
+    }
+    .popup-top{
+      width:100%;
+      aspect-ratio:1/1;
+      background:url("popup-poster.png") center/contain no-repeat;
+      background-color:#000;
+    }
+    .popup-message h3{font-size:2rem;line-height:1.05}
+    .popup-message p{color:#ddd;margin-top:10px}
+    .popup-body{padding:18px}
+    .popup-note{color:var(--muted);font-size:.82rem;text-align:center;margin-top:10px}
+
+    @media(max-width:900px){
+      .nav-links{position:fixed;left:4%;right:4%;top:84px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#111116;display:none;flex-direction:column;align-items:stretch}
+      .nav-links.open{display:flex}
+      .menu-btn{display:block}
+      .nav .btn{display:none}
+      .hero-grid{grid-template-columns:1fr}
+      .contact-panel{max-width:620px}
+      .feature-grid,.how-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:620px){
+      .dual-buttons{grid-template-columns:1fr}
+      .cta-actions{display:grid;grid-template-columns:1fr;width:100%}
+      .section{padding:68px 0}
+      h1{letter-spacing:-2.5px}
+      .hero{padding-top:112px}
+      .hero-stats,.feature-grid,.how-grid,.footer-grid{grid-template-columns:1fr}
+      .cta-box{padding:30px 22px;display:block}
+      .cta-box .btn{margin-top:22px;width:100%}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="#home" class="brand"><span>cric</span><span>buzzs</span></a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#features">Services</a>
+        <a href="#how">How It Works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <a class="btn btn-primary"
+         href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye."
+         target="_blank" rel="noopener">WhatsApp</a>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-badge"><span class="pulse"></span> WhatsApp & Telegram available</div>
+
+          <h1>Cricket Info.<span class="accent">Direct Support.</span></h1>
+
+          <p class="hero-copy">
+            Match schedule, tournament information aur cricket-related details ke liye WhatsApp ya Telegram par contact karein.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-whatsapp-inline"
+               href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye."
+               target="_blank" rel="noopener">
+              💬 WhatsApp
+            </a>
+            <a class="btn btn-telegram"
+               href="https://t.me/cricbuzzsinfo"
+               target="_blank" rel="noopener">
+              ✈️ Telegram
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat"><strong>Fast</strong><span>WhatsApp response</span></div>
+            <div class="hero-stat"><strong>Simple</strong><span>One-click contact</span></div>
+            <div class="hero-stat"><strong>Mobile</strong><span>Easy to use</span></div>
+          </div>
+        </div>
+
+        <aside class="contact-panel">
+          <div class="contact-icon">💬</div>
+          <h2>Need cricket information?</h2>
+          <p>Website par demo match ya fake information nahi dikhayi jayegi. User ko saari details WhatsApp se milegi.</p>
+
+          <div class="support-list">
+            <div class="support-item"><span>✓</span><span>Daily match information</span></div>
+            <div class="support-item"><span>✓</span><span>Tournament and schedule details</span></div>
+            <div class="support-item"><span>✓</span><span>General cricket support</span></div>
+          </div>
+
+          <div class="dual-buttons">
+          <a class="btn btn-whatsapp"
+             href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye."
+             target="_blank" rel="noopener">
+            💬 WhatsApp
+          </a>
+          <a class="btn btn-telegram"
+             href="https://t.me/cricbuzzsinfo"
+             target="_blank" rel="noopener">
+            ✈️ Telegram
+          </a>
+          </div>
+
+          
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="eyebrow">What users can ask</div>
+        <h2 class="section-title">Information through WhatsApp & Telegram</h2>
+        <p class="section-copy">Website ka main kaam user ko WhatsApp aur Telegram support tak pahunchana hai.</p>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">01 / MATCHES</div>
+            <h3>Match Information</h3>
+            <p>Aaj aur upcoming cricket matches ki jankari WhatsApp par milegi.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">02 / SCHEDULE</div>
+            <h3>Schedule Details</h3>
+            <p>Match time, teams aur tournament schedule ke liye WhatsApp par message karein.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">03 / SUPPORT</div>
+            <h3>Direct Assistance</h3>
+            <p>General cricket-related sawal aur website support direct chat se milega.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <div class="eyebrow">How it works</div>
+        <h2 class="section-title">Three simple steps</h2>
+
+        <div class="how-grid">
+          <article class="step">
+            <div class="step-no">1</div>
+            <h3>Website open karein</h3>
+            <p>Cricbuzzs landing page mobile ya desktop par open karein.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-no">2</div>
+            <h3>WhatsApp ya Telegram button dabayein</h3>
+            <p>Apni pasand ka button dabate hi WhatsApp chat ya Telegram channel open hoga.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-no">3</div>
+            <h3>Apna sawal bhejein</h3>
+            <p>Jo cricket information chahiye, woh message me likh kar bhej dein.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="eyebrow">FAQ</div>
+        <h2 class="section-title">Frequently asked questions</h2>
+
+        <div class="faq-wrap">
+          <div class="faq-item active">
+            <button class="faq-q"><span>Match information kahan milegi?</span><span>+</span></button>
+            <div class="faq-a"><p>Match aur schedule ki information WhatsApp ya Telegram ke through milegi.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q"><span>Kya website par live score rahega?</span><span>+</span></button>
+            <div class="faq-a"><p>Nahi. Is version me demo ya live score section nahi rahega.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q"><span>WhatsApp aur Telegram kaise open hoga?</span><span>+</span></button>
+            <div class="faq-a"><p>WhatsApp button se chat aur Telegram button se @cricbuzzsinfo channel open hoga.</p></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q"><span>Kya Meta Pixel laga hai?</span><span>+</span></button>
+            <div class="faq-a"><p>Nahi. Is code me Meta Pixel, Google tag ya tracking code nahi hai.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <div class="eyebrow">Contact now</div>
+            <h2>Jo bhi information chahiye, WhatsApp ya Telegram se judein</h2>
+          </div>
+
+          <div class="cta-actions">
+          <a class="btn btn-whatsapp-inline"
+             href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye."
+             target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a class="btn btn-telegram"
+             href="https://t.me/cricbuzzsinfo"
+             target="_blank" rel="noopener">✈️ Telegram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand"><span>cric</span><span>buzzs</span></div>
+          <p class="footer-copy">Cricket information and general support through WhatsApp and Telegram.</p>
+        </div>
+
+        <div>
+          <div class="footer-title">Connect</div>
+          <div class="footer-links">
+            <a class="social-link" href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye." target="_blank" rel="noopener">💬 WhatsApp</a>
+            <a class="social-link" href="https://t.me/cricbuzzsinfo" target="_blank" rel="noopener">✈️ Telegram</a>
+            <span>18+ • Use online services responsibly</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright">© <span id="year"></span> Cricbuzzs. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <div class="popup-overlay" id="popupOverlay" role="dialog" aria-modal="true">
+    <div class="popup">
+      <button class="popup-close" id="popupClose" aria-label="Close popup">×</button>
+
+      <div class="popup-top" aria-label="Cricbuzzs promotional poster"></div>
+
+      <div class="popup-body">
+        <div class="dual-buttons">
+        <a class="btn btn-whatsapp"
+           href="https://wa.me/919559131687?text=Hello%20Cricbuzzs%2C%20mujhe%20cricket%20information%20chahiye."
+           target="_blank" rel="noopener">
+          💬 WhatsApp
+        </a>
+        <a class="btn btn-telegram"
+           href="https://t.me/cricbuzzsinfo"
+           target="_blank" rel="noopener">
+          ✈️ Telegram
+        </a>
+        </div>
+        <div class="popup-note">Poster band karne ke liye upar × dabayein.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+      menuBtn.textContent = navLinks.classList.contains("open") ? "×" : "☰";
+    });
+
+    document.querySelectorAll("#navLinks a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuBtn.textContent = "☰";
+      });
+    });
+
+    document.querySelectorAll(".faq-q").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.parentElement;
+        document.querySelectorAll(".faq-item").forEach(other => {
+          if (other !== item) other.classList.remove("active");
+        });
+        item.classList.toggle("active");
+      });
+    });
+
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupClose = document.getElementById("popupClose");
+
+    function openPopup() {
+      popupOverlay.classList.add("show");
+      document.body.classList.add("modal-open");
+    }
+
+    function closePopup() {
+      popupOverlay.classList.remove("show");
+      document.body.classList.remove("modal-open");
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(openPopup, 1000);
+    });
+
+    popupClose.addEventListener("click", closePopup);
+
+    popupOverlay.addEventListener("click", event => {
+      if (event.target === popupOverlay) closePopup();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closePopup();
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
